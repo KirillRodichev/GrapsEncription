@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import model.EncryptionKey;
 import model.MatrixBuilder;
@@ -6,7 +6,6 @@ import model.MatrixCipher;
 import model.Number;
 import utils.Array;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
