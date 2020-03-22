@@ -1,3 +1,5 @@
+package Controller;
+
 import model.EncryptionKey;
 import model.MatrixBuilder;
 import model.MatrixCipher;
