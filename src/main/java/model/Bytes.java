@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 
 abstract class Bytes {
 
@@ -26,16 +27,16 @@ abstract class Bytes {
         return value;
     }
 
-    public static ArrayList<Integer> convertToInts(ArrayList<BitSet> bitSets) {
-        ArrayList<Integer> numbers = new ArrayList<>();
+    public static List<Integer> convertToInts(List<BitSet> bitSets) {
+        List<Integer> numbers = new ArrayList<>();
         for (BitSet bitSet : bitSets) {
             numbers.add(convert(bitSet));
         }
         return numbers;
     }
 
-    public static ArrayList<BitSet> convertToBits(ArrayList<Integer> numbers) {
-        ArrayList<BitSet> bitSets = new ArrayList<>();
+    public static List<BitSet> convertToBits(List<Integer> numbers) {
+        List<BitSet> bitSets = new ArrayList<>();
         for (Integer number : numbers) {
             bitSets.add(convert(number));
         }

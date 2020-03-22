@@ -1,25 +1,30 @@
 import model.EncryptionKey;
+import model.MatrixBuilder;
+import model.MatrixCipher;
 import model.Number;
+import utils.Array;
 
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         Number number = new Number();
         number.setValue(50);
-        EncryptionKey key = EncryptionKey.create(number);
+        EncryptionKey initialKey = EncryptionKey.create(number);
 
-        ArrayList<Integer> intsList = key.getNumericKey();
-        ArrayList<BitSet> bitSetsList = key.getBinaryKey();
+        List<Integer> intsList = initialKey.getNumericKey();
+        List<BitSet> bitSetsList = initialKey.getBinaryKey();
 
-        for (Integer integer : intsList) {
-            System.out.printf("%d ", integer);
-        }
+        MatrixBuilder matrixBuilder = new MatrixBuilder();
 
         System.out.println("\n");
-        for (BitSet bitSet : bitSetsList) {
-            System.out.println(bitSet);
-        }
+        matrixBuilder.print();
+
+        MatrixCipher matrixCipher = MatrixCipher.encrypt(matrixBuilder, initialKey);
+        List<BitSet> cryptoMatrix = matrixCipher.getCryptoMatrix();
+        System.out.println();
+        Array.printBinaryArray(cryptoMatrix);
     }
 }
