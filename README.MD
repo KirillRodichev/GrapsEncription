@@ -8,13 +8,13 @@
     sets doesn't cross and their association with the set of "specials" gives as a hole set of graph's vertexes.
     Select them randomly.
     4. Draw the all of the vertexes with without their values considering "specials" (pic.1).
+    ![Picture 1](src/main/resources/img/pic1.jpg) 
     4. Write the values (pic. 2)
+    ![Picture 2](src/main/resources/img/pic2.jpg)
     4. Sum up the values in related vertexes (pic. 3)
+    ![Picture 3](src/main/resources/img/pic3.jpg) 
     4. Imagine heaving more vertexes and edges under control (pic. 4)
-![Picture 1](src/main/resources/img/pic1.jpg) 
-![Picture 2](src/main/resources/img/pic2.jpg)
-![Picture 3](src/main/resources/img/pic3.jpg) 
-![Picture 4](src/main/resources/img/pic4.jpg)
+    ![Picture 4](src/main/resources/img/pic4.jpg)
 5. Our cipher is gonna be bloc-symmetric, so lets follow modern trends and store our graph (block) as an array of 128/64 bits (depending on the vertexes number)
 and create 256/128 bits key to have bulletproof cipher-code in the end (The represents our vertexes values after we summed them up). 
 
@@ -53,7 +53,7 @@ a number, which has the same index as previous key element.
 6. Now lets go through some "rounds". The number of rounds in average equals to 12. Each round contains following methods:
     6. matrix and key XOR  ![Picture 1](src/main/resources/img/matXor.jpg)
     6. row shift ![Picture 1](src/main/resources/img/rowShift.jpg)
-    6. cyclic shift ![Picture 1](src/main/resources/img/cyclicShift.jpg)
+    6. cyclic shift ![Picture 1](src/main/resources/img/cyclicShift.jpg) 
  
  Congratulations! You had encrypted a number! The numbers you can encrypt represents symbols in such encoding standards 
  as Unicode, ASCII and WIN-1251 
