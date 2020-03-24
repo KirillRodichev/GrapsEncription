@@ -5,6 +5,7 @@ import lombok.Setter;
 import utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.BitSet;
 import java.util.List;
 
@@ -20,8 +21,8 @@ public class EncryptionKey extends Bytes {
         List<Integer> decomposedNumber = number.decompose(Constants.MAT_SIZE_8);
         List<BitSet> decomposedBinaryNumber = convertToBits(decomposedNumber);
 
-        encryptionKey.setNumericKey(decomposedNumber);
-        encryptionKey.setBinaryKey(decomposedBinaryNumber);
+        encryptionKey.numericKey = decomposedNumber;
+        encryptionKey.binaryKey = decomposedBinaryNumber;
 
         return encryptionKey;
     }

@@ -3,6 +3,7 @@ package model;
 import lombok.Data;
 import lombok.Getter;
 import utils.Constants;
+import utils.Printer;
 import utils.Randomizer;
 
 import java.util.*;
@@ -16,8 +17,11 @@ public class MatrixBuilder {
     public MatrixBuilder() {
         this.size = Constants.MAT_SIZE_8;
         int specVertQuantity = calculateSpecialVertQuantity();
+        System.out.println("\nSpecial vertexes quantity: " + specVertQuantity);
         List<Integer> specVertPositions = calculateSpecVertPositions(specVertQuantity);
+        Printer.printIntList(specVertPositions, "Special vertexes positions");
         Map<Integer, List<Integer>> specVertRelatedVertexes = getSpecVertRelatedVertexes(specVertPositions);
+        Printer.printMap(specVertRelatedVertexes, "Special vertexes and relatedList");
         fillMatrix(specVertRelatedVertexes);
     }
 
@@ -134,7 +138,9 @@ public class MatrixBuilder {
     private void fillMatrix(Map<Integer, List<Integer>> specVertRelatedVertexes) {
         fillDefault();
         fillSymmetric(specVertRelatedVertexes);
+        print("Symmetric matrix");
         addRelations(specVertRelatedVertexes);
+        print("Prepared matrix");
     }
 
     private void fillDefault() {
@@ -144,20 +150,8 @@ public class MatrixBuilder {
         }
     }
 
-    public void print() {
-        for (int i = 0; i < this.size; i++) {
-            BitSet row = this.matrix.get(i);
-            for (int j = 0; j < this.size; j++) {
-                int val;
-                if (j < row.size()) {
-                    val = row.get(j) ? 1 : 0;
-                } else {
-                    val = 0;
-                }
-                System.out.printf("%3d", val);
-            }
-            System.out.println();
-        }
+    public void print(String header) {
+        Printer.printBinList(this.matrix, header);
     }
 
     public static List<List<Integer>> toNumericMatrix(List<BitSet> matrix) {

@@ -73,8 +73,6 @@ public class Test {
 
         MatrixBuilder matrixBuilder = new MatrixBuilder();
         System.out.println("initial");
-        matrixBuilder.print();
-        System.out.println();
 
         Number number = new Number();
         number.setValue(60);

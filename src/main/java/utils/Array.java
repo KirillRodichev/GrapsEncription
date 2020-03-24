@@ -24,9 +24,8 @@ public class Array {
                 } else {
                     val = 0;
                 }
-                System.out.printf("%3d", val);
+                System.out.printf("%d,", val);
             }
-            System.out.println();
         }
     }
 }

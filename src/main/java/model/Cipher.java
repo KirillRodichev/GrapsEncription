@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import utils.Constants;
 import utils.NonLinearArray;
+import utils.Printer;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -14,31 +15,34 @@ import static model.MatrixBuilder.toNumericMatrix;
 
 @Getter
 @Setter
-public class MatrixCipher {
+public class Cipher {
     private MatrixBuilder initialMatrix;
     private List<BitSet> cryptoMatrix;
     private EncryptionKey initialKey;
     private EncryptionKey cryptoKey;
 
-    public static MatrixCipher encrypt(MatrixBuilder initialMatrix, EncryptionKey initialKey) {
-        MatrixCipher matrixCipher = new MatrixCipher();
-        matrixCipher.initialMatrix = initialMatrix;
-        matrixCipher.initialKey = initialKey;
-        matrixCipher.cryptoKey = encryptKey(initialMatrix, initialKey);
-        matrixCipher.cryptoMatrix = toBinaryMatrix(encryptMatrix(initialMatrix, matrixCipher.cryptoKey));
-        return matrixCipher;
+    public static Cipher encrypt(MatrixBuilder initialMatrix, EncryptionKey initialKey) {
+        Cipher cipher = new Cipher();
+        cipher.initialMatrix = initialMatrix;
+        cipher.initialKey = initialKey;
+        cipher.cryptoKey = encryptKey(initialMatrix, initialKey);
+        Printer.printIntList(cipher.cryptoKey.getNumericKey(), "Crypto key: numeric");
+        Printer.printBinList(cipher.cryptoKey.getBinaryKey(), "Crypto key: binary");
+        cipher.cryptoMatrix = toBinaryMatrix(encryptMatrix(initialMatrix, cipher.cryptoKey));
+        return cipher;
     }
 
     private static EncryptionKey encryptKey(MatrixBuilder initialMatrix, EncryptionKey initialKey) {
+        int matrixSize = initialMatrix.getSize();
+        List<List<Integer>> numericMatrix = toNumericMatrix(initialMatrix.getMatrix());
         List<Integer> cryptoNumericKey = new ArrayList<>();
-        for (int i = 0; i < initialMatrix.getSize(); i++) {
-            BitSet row = initialMatrix.getMatrix().get(i);
-            int summand = 0;
-            for (int j = 0; j < initialMatrix.getSize(); j++) {
-                if (j > i && j < row.length()) {
-                    if (row.get(j)) {
-                        summand += initialKey.getNumericKey().get(j);
-                    }
+        List<Integer> numericKey = initialKey.getNumericKey();
+        for (int i = 0; i < matrixSize; i++) {
+            List<Integer> row = numericMatrix.get(i);
+            int summand = numericKey.get(i);
+            for (int j = 0; j < matrixSize; j++) {
+                if (j > i && row.get(j) == 1) {
+                    summand += numericKey.get(j);
                 }
             }
             cryptoNumericKey.add(summand);
@@ -67,13 +71,15 @@ public class MatrixCipher {
         return roundKeys;
     }
 
-    private static void goRounds(List<List<Integer>> numericMatrix, List<EncryptionKey> roundKeys) {
+    private static List<List<Integer>> goRounds(List<List<Integer>> numericMatrix, List<EncryptionKey> roundKeys) {
         for (int i = 0; i < Constants.ROUNDS_NUMBER; i++) {
             EncryptionKey roundKey = roundKeys.get(i);
-            matrixXOR(numericMatrix, roundKey);
+            numericMatrix = matrixXOR(numericMatrix, roundKey);
             circularShift(numericMatrix, roundKey);
             rowsShift(numericMatrix);
+            //Printer.printNumericMatrix(numericMatrix, "round matrix");
         }
+        return numericMatrix;
     }
 
     private static void nullInit(List<Integer> list, int size) {
@@ -98,6 +104,7 @@ public class MatrixCipher {
         for (int i = 0; i < matrixSize; i++) {
             rowShift(numericMatrix, i, i);
         }
+        Printer.printNumericMatrix(numericMatrix, "rowsShift matrix");
     }
 
     private static void colShift(List<List<Integer>> numericMatrix, int shift, int curColInd) {
@@ -119,21 +126,26 @@ public class MatrixCipher {
             rowShift(numericMatrix, shift, i);
             colShift(numericMatrix, shift, i);
         }
+        //Printer.printNumericMatrix(numericMatrix, "circularShift matrix");
     }
 
     private static List<List<Integer>> matrixXOR(List<List<Integer>> numericMatrix, EncryptionKey roundKey) {
         List<BitSet> binaryMatrix = toBinaryMatrix(numericMatrix);
         List<BitSet> binaryKey = roundKey.getBinaryKey();
+        Printer.printIntList(roundKey.getNumericKey(), "roundKey");
+        Printer.printBinList(roundKey.getBinaryKey(), "roundKey");
         for (int i = 0; i < binaryMatrix.size(); i++) {
             binaryMatrix.get(i).xor(binaryKey.get(i));
         }
+        //Printer.printNumericMatrix(numericMatrix, "XOR matrix");
         return toNumericMatrix(binaryMatrix);
     }
 
-    private static List<List<Integer>> encryptMatrix(MatrixBuilder initialMatrix, EncryptionKey initialKey) {
+    private static List<List<Integer>> encryptMatrix(MatrixBuilder initialMatrix, EncryptionKey cryptoKey) {
         List<List<Integer>> numericMatrix = toNumericMatrix(initialMatrix.getMatrix());
-        List<EncryptionKey> roundKeys = getRoundKeys(initialKey);
-        goRounds(numericMatrix, roundKeys);
+        List<EncryptionKey> roundKeys = getRoundKeys(cryptoKey);
+        numericMatrix = goRounds(numericMatrix, roundKeys);
+        Printer.printNumericMatrix(numericMatrix, "AFTER ROUNDS");
         return numericMatrix;
     }
 }

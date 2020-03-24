@@ -7,7 +7,7 @@ public class Constants {
     public static final int MAT_SIZE_11 = 11;
 
     public static final int SPEC_VERT_RANGE_ORIG = 2;
-    public static final int SPEC_VERT_RANGE_BOUND = 5;
+    public static final int SPEC_VERT_RANGE_BOUND = 4;
 
     public static final int ROUNDS_NUMBER = 12;
 }
