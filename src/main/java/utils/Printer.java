@@ -1,5 +1,6 @@
 package utils;
 
+import java.io.PrintWriter;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,36 @@ public class Printer {
         for (Integer num : list) {
             System.out.printf("%d ", num);
         }
+    }
+
+    public static void printIntList(List<Integer> list, PrintWriter out) {
+        for (Integer num : list) {
+            out.printf("%d,", num);
+        }
+        out.println();
+    }
+
+    public static void printIntList(List<Integer> list, List<Integer> indexes, PrintWriter out) {
+        for (Integer index : indexes) {
+            out.printf("%d,", list.get(index));
+        }
+        out.println();
+    }
+
+    public static void printBinList(List<BitSet> list, List<Integer> indexes, PrintWriter out) {
+        for (Integer i : indexes) {
+            BitSet row = list.get(i);
+            for (int j = 0; j < list.size(); j++) {
+                int val;
+                if (j < row.size()) {
+                    val = row.get(j) ? 1 : 0;
+                } else {
+                    val = 0;
+                }
+                out.printf("%d,", val);
+            }
+        }
+        out.println();
     }
 
     public static void printBinList(List<BitSet> list, String header) {

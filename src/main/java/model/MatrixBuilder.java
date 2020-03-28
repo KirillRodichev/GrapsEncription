@@ -17,11 +17,8 @@ public class MatrixBuilder {
     public MatrixBuilder() {
         this.size = Constants.MAT_SIZE_8;
         int specVertQuantity = calculateSpecialVertQuantity();
-        System.out.println("\nSpecial vertexes quantity: " + specVertQuantity);
         List<Integer> specVertPositions = calculateSpecVertPositions(specVertQuantity);
-        Printer.printIntList(specVertPositions, "Special vertexes positions");
         Map<Integer, List<Integer>> specVertRelatedVertexes = getSpecVertRelatedVertexes(specVertPositions);
-        Printer.printMap(specVertRelatedVertexes, "Special vertexes and relatedList");
         fillMatrix(specVertRelatedVertexes);
     }
 
@@ -138,9 +135,7 @@ public class MatrixBuilder {
     private void fillMatrix(Map<Integer, List<Integer>> specVertRelatedVertexes) {
         fillDefault();
         fillSymmetric(specVertRelatedVertexes);
-        print("Symmetric matrix");
         addRelations(specVertRelatedVertexes);
-        print("Prepared matrix");
     }
 
     private void fillDefault() {

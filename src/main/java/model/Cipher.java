@@ -26,9 +26,7 @@ public class Cipher {
         cipher.initialMatrix = initialMatrix;
         cipher.initialKey = initialKey;
         cipher.cryptoKey = encryptKey(initialMatrix, initialKey);
-        Printer.printIntList(cipher.cryptoKey.getNumericKey(), "Crypto key: numeric");
-        Printer.printBinList(cipher.cryptoKey.getBinaryKey(), "Crypto key: binary");
-        cipher.cryptoMatrix = toBinaryMatrix(encryptMatrix(initialMatrix, cipher.cryptoKey));
+        //cipher.cryptoMatrix = toBinaryMatrix(encryptMatrix(initialMatrix, cipher.cryptoKey));
         return cipher;
     }
 
@@ -77,7 +75,6 @@ public class Cipher {
             numericMatrix = matrixXOR(numericMatrix, roundKey);
             circularShift(numericMatrix, roundKey);
             rowsShift(numericMatrix);
-            //Printer.printNumericMatrix(numericMatrix, "round matrix");
         }
         return numericMatrix;
     }
@@ -104,7 +101,6 @@ public class Cipher {
         for (int i = 0; i < matrixSize; i++) {
             rowShift(numericMatrix, i, i);
         }
-        Printer.printNumericMatrix(numericMatrix, "rowsShift matrix");
     }
 
     private static void colShift(List<List<Integer>> numericMatrix, int shift, int curColInd) {
@@ -126,18 +122,14 @@ public class Cipher {
             rowShift(numericMatrix, shift, i);
             colShift(numericMatrix, shift, i);
         }
-        //Printer.printNumericMatrix(numericMatrix, "circularShift matrix");
     }
 
     private static List<List<Integer>> matrixXOR(List<List<Integer>> numericMatrix, EncryptionKey roundKey) {
         List<BitSet> binaryMatrix = toBinaryMatrix(numericMatrix);
         List<BitSet> binaryKey = roundKey.getBinaryKey();
-        Printer.printIntList(roundKey.getNumericKey(), "roundKey");
-        Printer.printBinList(roundKey.getBinaryKey(), "roundKey");
         for (int i = 0; i < binaryMatrix.size(); i++) {
             binaryMatrix.get(i).xor(binaryKey.get(i));
         }
-        //Printer.printNumericMatrix(numericMatrix, "XOR matrix");
         return toNumericMatrix(binaryMatrix);
     }
 
@@ -145,7 +137,6 @@ public class Cipher {
         List<List<Integer>> numericMatrix = toNumericMatrix(initialMatrix.getMatrix());
         List<EncryptionKey> roundKeys = getRoundKeys(cryptoKey);
         numericMatrix = goRounds(numericMatrix, roundKeys);
-        Printer.printNumericMatrix(numericMatrix, "AFTER ROUNDS");
         return numericMatrix;
     }
 }
